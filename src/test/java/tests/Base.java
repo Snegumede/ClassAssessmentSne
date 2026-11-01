@@ -6,18 +6,19 @@ import pages.HomePage;
 import pages.LandingPage;
 import pages.LoginPage;
 import utils.BrowserFactory;
-/*import utils.ReadData;
-import utils.TakeScreenshots;*/
+import utils.ReadData;
+import utils.TakeScreenshots;
+//import utils.TakeScreenshots;
 
 public class Base {
     BrowserFactory browserFactory = new BrowserFactory();
 
-    final WebDriver driver = browserFactory.startBrowser("chrome", "https://ndosisimplifiedautomation.vercel.app/");
+    final WebDriver driver = browserFactory.startBrowser("edge", "https://ndosisimplifiedautomation.vercel.app/");
 
     public HomePage homepage = PageFactory.initElements(driver, HomePage.class);
     public LoginPage loginPage = PageFactory.initElements(driver, LoginPage.class);
     public LandingPage landingPage = PageFactory.initElements(driver, LandingPage.class);
-    /*public TakeScreenshots takeScreenshots = new TakeScreenshots();
+    public TakeScreenshots takeScreenshots = new TakeScreenshots();
 
     ReadData readData;
 
@@ -27,6 +28,6 @@ public class Base {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }*/
+    }
 
 }
