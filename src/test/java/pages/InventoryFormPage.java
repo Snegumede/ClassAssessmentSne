@@ -38,7 +38,7 @@ public class InventoryFormPage extends BasePage {
         choose("Device Type", deviceType);
     }
 
-    /** The Brand dropdown must become enabled once a device type has been chosen. */
+
     public boolean isBrandEnabled() {
         try {
             WebElement brand = new WebDriverWait(driver, Duration.ofSeconds(10))

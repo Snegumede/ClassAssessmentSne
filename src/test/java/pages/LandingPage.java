@@ -13,10 +13,10 @@ public class LandingPage {
 
     WebDriver driver;
 
-    @FindBy(xpath = "//*[@id=\"app-root\"]/nav/div[1]/div[2]/div[1]/div")
+    @FindBy(xpath = "//span[normalize-space()='Learn']")
     WebElement LearnTabDropdown;
 
-    @FindBy(xpath ="//*[@id=\"app-root\"]/nav/div[1]/div[2]/div[1]/div/button[2]")
+    @FindBy(xpath ="//span[normalize-space()='Learning Materials']")
     WebElement LearningMaterialsButton;
     @FindBy(xpath = "//span[normalize-space()='My Learning']")
     WebElement myLearningTab;
