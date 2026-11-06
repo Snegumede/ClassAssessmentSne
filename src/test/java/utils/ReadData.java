@@ -1,50 +1,60 @@
 package utils;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * Reads key/value test data from test_data.xlsx (column A = key, column B = value).
+ * Rows are looked up by their label, so the order of rows in the sheet does not matter.
+ */
 public class ReadData {
 
     static String testDataPath = System.getProperty("user.dir") + "/src/test/java/testData/test_data.xlsx";
-    static FileInputStream fileInputStream;
+
+    private static final Map<String, String> data = new HashMap<>();
 
     static {
-        try {
-            fileInputStream = new FileInputStream(testDataPath);
+        try (FileInputStream fileInputStream = new FileInputStream(testDataPath);
+             XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream)) {
+
+            XSSFSheet sheet = workbook.getSheetAt(0);   // first sheet, whatever it is called
+            DataFormatter formatter = new DataFormatter();
+
+            for (Row row : sheet) {
+                Cell keyCell = row.getCell(0);
+                Cell valueCell = row.getCell(1);
+                if (keyCell == null || valueCell == null) {
+                    continue;
+                }
+                String key = formatter.formatCellValue(keyCell).trim().toLowerCase();
+                if (!key.isEmpty()) {
+                    data.put(key, formatter.formatCellValue(valueCell).trim());
+                }
+            }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Could not read test data from " + testDataPath, e);
         }
     }
 
-    static XSSFWorkbook workbook;
-
-    static {
-        try {
-            workbook = new XSSFWorkbook(fileInputStream);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+    public static String get(String key) {
+        String value = data.get(key.toLowerCase());
+        if (value == null) {
+            throw new IllegalArgumentException("No test data found for key '" + key + "' in " + testDataPath);
         }
+        return value;
     }
+
+    public static String username = get("login email");
+    public static String password = get("login password");
 
     public ReadData() throws Exception {
     }
-
-    static XSSFSheet sheet  = workbook.getSheet( "Sheet 1");
-
-    public static String username = sheet.getRow(1).getCell(1).getStringCellValue();
-    public static String password = sheet.getRow(2).getCell(1).getStringCellValue();
-
-    //row indexes increment with 1 to cater for (Numbers) formatting vs MS Excel - For reference
-//    public static String username = sheet.getRow(2).getCell(0).getStringCellValue();
-//    public static String password = sheet.getRow(2).getCell(1).getStringCellValue();
-
-//
-//    @Test
-//    public void testData() {
-//        System.out.println("Username: " + username);
-//        System.out.println("Password: " + password);
-//    }
 
 }

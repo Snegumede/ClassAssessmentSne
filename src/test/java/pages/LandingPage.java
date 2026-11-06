@@ -13,8 +13,16 @@ public class LandingPage {
 
     WebDriver driver;
 
+    @FindBy(xpath = "//*[@id=\"app-root\"]/nav/div[1]/div[2]/div[1]/div")
+    WebElement LearnTabDropdown;
+
+    @FindBy(xpath ="//*[@id=\"app-root\"]/nav/div[1]/div[2]/div[1]/div/button[2]")
+    WebElement LearningMaterialsButton;
     @FindBy(xpath = "//span[normalize-space()='My Learning']")
     WebElement myLearningTab;
+
+    @FindBy(xpath = "//span[contains(normalize-space(),'Web Automation Advance')] | //*[@role='tab'][contains(normalize-space(),'Web Automation Advance')] | //a[contains(normalize-space(),'Web Automation Advance')]")
+    WebElement webAutomationAdvanceTab;
 
     @FindBy(xpath = "//span[normalize-space()='Menu']")
     WebElement menuTab;
@@ -25,12 +33,24 @@ public class LandingPage {
         this.driver = driver;
     }
 
-    public void verifyLoginSuccess() {
+    public boolean verifyLoginSuccess() {
         new WebDriverWait(driver, Duration.ofSeconds(15)).until(ExpectedConditions.visibilityOf(myLearningTab));
-        myLearningTab.isDisplayed();
+        return myLearningTab.isDisplayed();
+    }
 
+    public void clickLearnTabDropdown() {
+        new WebDriverWait(driver, Duration.ofSeconds(15)).until(ExpectedConditions.elementToBeClickable(LearnTabDropdown));
+        LearnTabDropdown.click();
+    }
 
+    public void clickLearningMaterialsButton() {
+        new WebDriverWait(driver, Duration.ofSeconds(15)).until(ExpectedConditions.elementToBeClickable(LearningMaterialsButton));
+        LearningMaterialsButton.click();
+    }
 
+    public void clickWebAutomationAdvanceTab() {
+        new WebDriverWait(driver, Duration.ofSeconds(15)).until(ExpectedConditions.elementToBeClickable(webAutomationAdvanceTab));
+        webAutomationAdvanceTab.click();
     }
     public void clickMenuButton(){
         new WebDriverWait(driver, Duration.ofSeconds(15)).until(ExpectedConditions.visibilityOf(menuTab));
